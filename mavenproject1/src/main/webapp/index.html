@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <h1>Csengetett MyLord</h1>
+        
+        
+        <br/><br/>
+             
+            <select onchange="" id="szemelyek" name="szemely"></select>
+        <button onclick="kedvence()">Mi a kedvence?</button>
+        <span id="etel"> </span>
+    </body>
+    <script>
+        var ajax = new XMLHttpRequest();
+        ajax.open("GET", "/mavenproject1-1.0-SNAPSHOT/rest/szemely/osszes", true)
+        ajax.responseType = "json";
+        ajax.onload = function () {
+            for (var x in ajax.response) {
+                var option = document.createElement("OPTION")
+                option.value = ajax.response[x].id;
+                option.innerHTML = ajax.response[x].neve;
+                document.getElementById("szemelyek").appendChild(option);
+            }
+        }
+        ajax.send();
+        
+        function kedvence()
+{       
+    var xhr = new XMLHttpRequest();
+xhr.open('POST', '/mavenproject1-1.0-SNAPSHOT/rest/szemely/kedvenc', true);
+xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+xhr.onload = function () {
+    // do something to response
+    document.getElementById("etel").innerHTML=(this.responseText);
+};
+xhr.send('szemely='+document.getElementById("szemelyek").value);
+        
+}
+    </script>
+</html>
